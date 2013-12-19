@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load sentry_helpers %}
+
+<div id="request" class="module">
+    <div class="page-header">
+        <h2>{% trans "Call ID Stack" %}</h2>
+    </div>
+    <div class="module-content">
+        <table class="table table-striped vars">
+            <tbody>
+                {% for call_id in call_id_stack reversed %}
+                    <tr>
+                        <td class="values">
+                            {% if forloop.first %}<strong>{% endif %}
+                            <code>{{ call_id }}</code>
+                            {% if forloop.first %}</strong>{% endif %}
+                            {% if not forloop.last %}called by...{% endif %}
+                        </td>
+                        <td>
+                            <a href="../../?call_id={{ call_id|urlencode }}">Events for call</a>
+                        </td>
+                        <td>
+                            <a href="../../?parent_call_id={{ call_id|urlencode }}">Events from children</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

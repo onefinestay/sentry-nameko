@@ -55,6 +55,32 @@ The tagging of the `call_id` and `parent_call_id` fields enables searches to be
 performed on events accordingly. The use of `sentry_call_id_stack.CallIdStack`
 triggers the custom data interface.
 
+The `WorkerContext` class provides an `extra_for_logging` property where you 
+can provide a default value for the `extra` parameters of log statements. It's 
+recommended that you create an application specific sub-class where you return
+the extra data above, as well as anything else you'd like logged. Nameko's 
+built-in log statements will automatically take advantage of this:
+
+```python
+
+class MyApplicationWorkerContext(WorkerContext):
+    @property
+    def extra_for_logging(self):
+        return {
+            'tags': {
+                'call_id': worker_ctx.call_id,
+                'parent_call_id': worker_ctx.immediate_parent_call_id,
+                'my_custom_tag': 'tag value',
+            },
+            'sentry_nameko.CallIdStack': {
+                'call_id_stack': worker_ctx.call_id_stack,
+            },
+        }
+        
+logger.log(log_level, message, extra=worker_ctx.extra_for_logging)
+
+```
+
 ## Contributing
 
 `sentry-nameko` is developed on GitHub, primarily by the development team at

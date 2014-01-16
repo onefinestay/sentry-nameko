@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name='sentry-nameko',
-    version='0.1.0',
+    version='0.1.1',
     packages=find_packages(exclude=['test', 'test.*']),
     url='http://github.com/onefinestay/sentry-nameko',
     author='onefinestay',

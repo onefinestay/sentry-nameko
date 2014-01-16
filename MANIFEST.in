@@ -1,0 +1,2 @@
+include README.md
+recursive-include sentry_nameko/templates *
